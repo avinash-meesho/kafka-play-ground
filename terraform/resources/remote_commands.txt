@@ -1,0 +1,29 @@
+
+sudo apt update -y
+sudo apt install -y \
+    jq \
+    haproxy \
+    python3-pip \
+    openjdk-11-jdk
+
+sudo pip3 install ansible==5.10.0 # install ansible 2.12
+
+ansible-galaxy collection install ansible.posix
+ansible-galaxy collection install confluent.platform
+
+tee /home/ubuntu/.ansible.cfg << END
+[defaults]
+host_key_checking = False
+hash_behaviour=merge
+deprecation_warnings=False
+END
+
+curl -O http://packages.confluent.io/archive/7.2/confluent-7.2.1.tar.gz
+
+tar -zxvf confluent-7.2.1.tar.gz
+
+tee -a ~/.bashrc << END
+PATH=$PATH:~/confluent-7.2.1/bin
+END
+
+rm confluent-7.2.1.tar.gz

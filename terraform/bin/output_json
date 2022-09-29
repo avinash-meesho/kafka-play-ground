@@ -1,0 +1,15 @@
+#! /bin/bash
+
+cloud=$1
+
+if [ "$cloud" != "aws" ] && [ "$cloud" != "gcp" ] && [ "$cloud" != "azure" ] ; then
+    echo "   invalid cloud_provider: $cloud"
+    echo "   usage: remote_commands [cloud_provider]"
+    echo "   cloud_provider aws, gcp, azure"
+    exit 0
+fi
+
+cd $cloud
+rm tmp/*
+terraform output -json > tmp/output_raw.json
+cd ..

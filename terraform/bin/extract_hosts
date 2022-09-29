@@ -1,0 +1,51 @@
+#! /bin/bash
+
+cloud=$1
+
+if [ "$cloud" != "aws" ] && [ "$cloud" != "gcp" ] && [ "$cloud" != "azure" ] ; then
+    echo "   invalid cloud_provider: $cloud"
+    echo "   usage: remote_commands [cloud_provider]"
+    echo "   cloud_provider aws, gcp, azure"
+    exit 0
+fi
+
+cd $cloud
+
+json_output=$(cat tmp/output_raw.json)
+
+hosted_zone_name=$(jq '.hosted_zone_name' <<< $json_output) 
+
+function convert_dns() {
+  result=$(jq ".kafka_cluster.value.$1" <<< $json_output | jq '. | map({(.): {} }) | add')
+  if [ "$result" != "null" ]
+  then 
+    echo "$result"
+  else 
+    echo $"{}"
+  fi
+}
+
+zookeeper_dns=$(convert_dns zookeeper)
+broker_dns=$(convert_dns kafka_broker)
+c3_dns=$(convert_dns control_center)
+schema_registry_dns=$(convert_dns schema_registry)
+connect_dns=$(convert_dns kafka_connect)
+ksql_dns=$(convert_dns ksql)
+rest_proxy_dns=$(convert_dns kafka_rest)
+
+template_json=$(yq -o=json ../resources/hosts-template.yml)
+
+hosts_json=$(echo $template_json | \
+  jq ".zookeeper.hosts |= $zookeeper_dns" | \
+  jq ".kafka_broker.hosts |= $broker_dns" | \
+  jq ".control_center.hosts |= $c3_dns" | \
+  jq ".schema_registry.hosts |= $schema_registry_dns" | \
+  jq ".kafka_connect.hosts |= $connect_dns" | \
+  jq ".ksql.hosts |= $ksql_dns" | \
+  jq ".kafka_rest.hosts |= $rest_proxy_dns")
+
+echo $hosts_json | jq > tmp/hosts.json
+yq -P '.' tmp/hosts.json > tmp/hosts.yml
+rm tmp/hosts.json
+
+cd ..

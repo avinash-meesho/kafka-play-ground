@@ -1,0 +1,26 @@
+#! /bin/bash
+
+
+cloud=$1
+
+if [ "$cloud" != "aws" ] && [ "$cloud" != "gcp" ] && [ "$cloud" != "azure" ] ; then
+    echo "   invalid cloud_provider: $cloud"
+    echo "   usage: remote_commands [cloud_provider]"
+    echo "   cloud_provider aws, gcp, azure"
+    exit 0
+fi
+
+cd $cloud
+
+scp tmp/hosts.yml ubuntu@$2:.
+scp ~/.ssh/$3 ubuntu@$2:.ssh/
+
+ssh ubuntu@$2 < ../resources/remote_commands.txt
+
+ssh ubuntu@$2 "tee /home/ubuntu/.ssh/config << END
+Host *
+    IdentityFile ~/.ssh/$3
+    User ubuntu
+END"
+
+cd ..

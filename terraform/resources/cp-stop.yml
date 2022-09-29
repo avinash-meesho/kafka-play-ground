@@ -1,0 +1,29 @@
+---
+
+- name: Stop broker
+  hosts: kafka_broker
+  tags: kafka_broker
+  tasks:
+    - name: Execute systemctl stop confluent-server
+      command: sudo systemctl stop confluent-server
+
+- name: Stop control-center
+  hosts: control_center
+  tags: control_center
+  tasks:
+    - name: Execute systemctl stop confluent-control-center
+      command: sudo systemctl stop confluent-control-center
+
+- name: Stop ksql
+  hosts: ksql
+  tags: ksql
+  tasks:
+    - name: Execute systemctl stop confluent-ksqldb
+      command: sudo systemctl stop confluent-ksqldb
+
+- name: Stop kafka-connect
+  hosts: kafka_connect
+  tags: kafka_connect
+  tasks:
+    - name: Execute systemctl stop confluent-kafka-connect
+      command: sudo systemctl stop confluent-kafka-connect

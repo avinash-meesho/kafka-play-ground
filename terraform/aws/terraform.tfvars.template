@@ -1,0 +1,20 @@
+aws_profile = "{{aws-profile}}"
+ssh_key_name = "{{user-key}}"
+
+resource_prefix = "{{user}}"
+owner_name = "{{user}}"
+owner_email = "{{user@example.com}}"
+
+region             = "ap-southeast-2"
+availability_zones = ["ap-southeast-2b", "ap-southeast-2c"]
+
+zookeeper_count       = 3
+broker_count          = 3
+c3_count              = 1
+schema_registry_count = 1
+connect_count         = 1
+ksql_count            = 1
+rest_proxy_count      = 0
+
+kafka_default_ami           = "ami-055166f8a8041fbf1" # cp-ansible expects ubuntu 20.04
+kafka_default_instance_type = "t3a.medium"

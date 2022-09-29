@@ -1,0 +1,32 @@
+all:
+  vars:
+    ansible_connection: ssh
+    ansible_user: ubuntu
+    ansible_become: true
+    sasl_protocol: scram
+    sasl_scram_users:
+      cpuser:
+        principal: cpuser
+        password: password
+zookeeper:
+  hosts: {}
+kafka_broker:
+  vars:
+    kafka_broker_custom_properties:
+      password.encoder.secret: encoder-secret
+  hosts: {}
+control_center:
+  hosts: {}
+schema_registry:
+  vars:
+    schema_registry_custom_properties:
+      resource.extension.class: io.confluent.schema.exporter.SchemaExporterResourceExtension
+      kafkastore.update.handlers: io.confluent.schema.exporter.storage.SchemaExporterUpdateHandler
+      password.encoder.secret: encoder-secret
+  hosts: {}
+kafka_connect:
+  hosts: {}
+ksql:
+  hosts: {}
+kafka_rest:
+  hosts: {}
