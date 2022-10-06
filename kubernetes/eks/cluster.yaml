@@ -1,0 +1,27 @@
+# An example of ClusterConfig object using an existing VPC:
+--- 
+apiVersion: eksctl.io/v1alpha5
+kind: ClusterConfig
+
+metadata:
+  name: shin-eks-cluster
+  region: ap-southeast-2
+
+managedNodeGroups:
+  - name: managed-ng-public
+    instanceType: t3a.large
+    minSize: 2
+    desiredCapacity: 2
+    maxSize: 8
+    availabilityZones: ["ap-southeast-2b"]
+    volumeSize: 50
+    updateConfig:
+      maxUnavailable: 3 # or `maxUnavailablePercentage: 75` to specify maxUnavailable as a percentage of total nodes
+    ssh:
+      allow: true
+      publicKeyName: shin-test-key
+      # new feature for restricting SSH access to certain AWS security group IDs
+    labels: {role: worker}
+
+    tags:
+      nodegroup-role: worker
