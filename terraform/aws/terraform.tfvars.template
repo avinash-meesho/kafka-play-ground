@@ -6,7 +6,6 @@ owner_name = "{{user}}"
 owner_email = "{{user@example.com}}"
 
 region             = "ap-southeast-2"
-availability_zones = ["ap-southeast-2b", "ap-southeast-2c"]
 
 zookeeper_count       = 3
 broker_count          = 3

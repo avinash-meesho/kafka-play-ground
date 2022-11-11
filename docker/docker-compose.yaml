@@ -1,0 +1,149 @@
+---
+version: '3.5'
+services:
+
+  zookeeper:
+    image: confluentinc/cp-zookeeper:7.2.2
+    hostname: zookeeper
+    container_name: zookeeper
+    restart: always
+    ports:
+      - "9999:9999"
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+      KAFKA_JMX_PORT: 9999
+      KAFKA_JMX_HOSTNAME: localhost
+
+  broker:
+    image: confluentinc/cp-server:7.2.2
+    hostname: broker
+    container_name: broker
+    restart: always
+    # deploy:
+    #   resources:
+    #     limits:
+    #       cpus: '0.5'
+    #       memory: 512M
+    ports:
+      - "9092:9092"
+      - "29092:29092"
+      - "10000:10000"
+    environment:
+      KAFKA_JMX_PORT: 10000
+      KAFKA_JMX_HOSTNAME: localhost
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: 'zookeeper:2181'
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: BROKER:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      KAFKA_LISTENERS: BROKER://:9092,PLAINTEXT_HOST://:29092
+      KAFKA_ADVERTISED_LISTENERS: BROKER://broker:9092,PLAINTEXT_HOST://localhost:29092
+      KAFKA_INTER_BROKER_LISTENER_NAME: BROKER
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      CONFLUENT_SUPPORT_CUSTOMER_ID: 'anonymous'
+      # Confluent Metrics Reporter for Control Center Cluster Monitoring
+      KAFKA_METRIC_REPORTERS: io.confluent.metrics.reporter.ConfluentMetricsReporter
+      CONFLUENT_METRICS_REPORTER_BOOTSTRAP_SERVERS: broker:9092
+      CONFLUENT_METRICS_REPORTER_TOPIC_REPLICAS: 1
+      CONFLUENT_METRICS_ENABLE: 'true'
+      # for 5.4.x:
+      KAFKA_CONFLUENT_LICENSE_TOPIC_REPLICATION_FACTOR: 1
+      # for 6.0.0
+      KAFKA_CONFLUENT_BALANCER_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+
+  broker2:
+    image: confluentinc/cp-server:7.2.2
+    hostname: broker2
+    container_name: broker2
+    restart: always
+    # deploy:
+    #   resources:
+    #     limits:
+    #       cpus: '0.5'
+    #       memory: 512M
+    ports:
+      - "9292:9292"
+      - "29292:29292"
+      - "12000:12000"
+    environment:
+      KAFKA_JMX_PORT: 12000
+      KAFKA_JMX_HOSTNAME: localhost
+      KAFKA_BROKER_ID: 2
+      KAFKA_ZOOKEEPER_CONNECT: 'zookeeper:2181'
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: BROKER:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      KAFKA_LISTENERS: BROKER://:9292,PLAINTEXT_HOST://:29292
+      KAFKA_ADVERTISED_LISTENERS: BROKER://broker2:9292,PLAINTEXT_HOST://localhost:29292
+      KAFKA_INTER_BROKER_LISTENER_NAME: BROKER
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      CONFLUENT_SUPPORT_CUSTOMER_ID: 'anonymous'
+      # Confluent Metrics Reporter for Control Center Cluster Monitoring
+      KAFKA_METRIC_REPORTERS: io.confluent.metrics.reporter.ConfluentMetricsReporter
+      CONFLUENT_METRICS_REPORTER_BOOTSTRAP_SERVERS: broker2:9292
+      CONFLUENT_METRICS_REPORTER_TOPIC_REPLICAS: 1
+      CONFLUENT_METRICS_ENABLE: 'true'
+      # for 5.4.x:
+      KAFKA_CONFLUENT_LICENSE_TOPIC_REPLICATION_FACTOR: 1
+      # for 6.0.0
+      KAFKA_CONFLUENT_BALANCER_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+
+  broker3:
+    image: confluentinc/cp-server:7.2.2
+    hostname: broker3
+    container_name: broker3
+    restart: always
+    # deploy:
+    #   resources:
+    #     limits:
+    #       cpus: '0.5'
+    #       memory: 512M
+    ports:
+      - "9392:9392"
+      - "29392:29392"
+      - "13000:13000"
+    environment:
+      KAFKA_JMX_PORT: 13000
+      KAFKA_JMX_HOSTNAME: localhost
+      KAFKA_BROKER_ID: 3
+      KAFKA_ZOOKEEPER_CONNECT: 'zookeeper:2181'
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: BROKER:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      KAFKA_LISTENERS: BROKER://:9392,PLAINTEXT_HOST://:29392
+      KAFKA_ADVERTISED_LISTENERS: BROKER://broker3:9392,PLAINTEXT_HOST://localhost:29392
+      KAFKA_INTER_BROKER_LISTENER_NAME: BROKER
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      CONFLUENT_SUPPORT_CUSTOMER_ID: 'anonymous'
+      # Confluent Metrics Reporter for Control Center Cluster Monitoring
+      KAFKA_METRIC_REPORTERS: io.confluent.metrics.reporter.ConfluentMetricsReporter
+      CONFLUENT_METRICS_REPORTER_BOOTSTRAP_SERVERS: broker3:9392
+      CONFLUENT_METRICS_REPORTER_TOPIC_REPLICAS: 1
+      CONFLUENT_METRICS_ENABLE: 'true'
+      # for 5.4.x:
+      KAFKA_CONFLUENT_LICENSE_TOPIC_REPLICATION_FACTOR: 1
+      # for 6.0.0
+      KAFKA_CONFLUENT_BALANCER_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+
+  control-center:
+    image: confluentinc/cp-enterprise-control-center:7.2.2
+    hostname: control-center
+    container_name: control-center
+    restart: always
+    ports:
+      - "9021:9021"
+    environment:
+      CONTROL_CENTER_BOOTSTRAP_SERVERS: 'broker:9092'
+      CONTROL_CENTER_ZOOKEEPER_CONNECT: 'zookeeper:2181'
+      CONTROL_CENTER_KAFKA_BOOTSTRAP_SERVERS: 'broker:9092'
+      CONTROL_CENTER_REPLICATION_FACTOR: 1
+      CONTROL_CENTER_INTERNAL_TOPICS_PARTITIONS: 1
+      CONTROL_CENTER_MONITORING_INTERCEPTOR_TOPIC_PARTITIONS: 1
+      CONFLUENT_METRICS_TOPIC_REPLICATION: 1
+      CONTROL_CENTER_KAFKA_MYCLUSTER_BOOTSTRAP_SERVERS: 'broker:9092'
+      CONTROL_CENTER_UI_AUTOUPDATE_ENABLE: "false"
+      CONTROL_CENTER_COMMAND_TOPIC_REPLICATION: 1
+      CONTROL_CENTER_METRICS_TOPIC_REPLICATION: 1
+    volumes:
+      - /Users/szhang/local/lib/confluent-7.2.1:/usr/share/confluent-7.2.1

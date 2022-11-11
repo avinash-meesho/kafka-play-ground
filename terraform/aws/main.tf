@@ -35,8 +35,11 @@ module "bastion" {
   ssh_key_name    = var.ssh_key_name
   instance_name   = "bastion"
 
-  vpc_id     = module.vpc.vpc_id
-  subnet_ids = [module.vpc.public_subnets[0]]
+  public_dns     = true
+  hosted_zone_id = var.hosted_zone_id
+  dns_suffix     = var.dns_suffix
+  vpc_id         = module.vpc.vpc_id
+  subnet_ids     = [module.vpc.public_subnets[0]]
   ingress_ports = {
     ssh : {
       description : "",
@@ -50,13 +53,17 @@ module "bastion" {
       description : "https",
       port : 443
     },
-    ccbroker: {
+    ccbroker : {
       description : "ccbroker",
-      port: 9092
+      port : 9092
     },
     c3 : {
       description : "c3",
       port : 9021
+    },
+    ldap : {
+      description : "ldap",
+      port : 389
     }
   }
 
@@ -69,8 +76,12 @@ module "bastion" {
 module "kafka-cluster" {
   source = "./modules/kafka-cluster"
 
-  vpc_id          = module.vpc.vpc_id
-  subnet_ids      = module.vpc.private_subnets
+  hosted_zone_id     = var.hosted_zone_id
+  dns_suffix         = var.dns_suffix
+  vpc_id             = module.vpc.vpc_id
+  private_subnet_ids = module.vpc.private_subnets
+  public_subnet_ids  = module.vpc.public_subnets
+
   resource_prefix = var.resource_prefix
   ssh_key_name    = var.ssh_key_name
 

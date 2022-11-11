@@ -1,0 +1,70 @@
+#! /bin/bash
+
+WORKSPACE=tmp/certs
+VALIDITY=365
+KEY_PASS=passwd
+STORE_PASS=passwd
+DOMAIN=shin.ps.confluent.io
+
+CA_KEY=ca-key
+CA_CERT=ca-cert
+
+function createCertificateAuthority() {
+    printf "=======\t\t\tGenerate Certificate Authority\t\t\t=========\n"
+    openssl req -new -x509 \
+        -keyout $CA_KEY \
+        -out $CA_CERT \
+        -days $VALIDITY \
+        -subj "/C=AU/O=Confluent/OU=PS/CN=*.$DOMAIN" \
+        -passout pass:$KEY_PASS
+    
+    # import root ca to trust store
+    keytool -keystore truststore.jks -alias CARoot -importcert -file $CA_CERT -storepass $STORE_PASS -noprompt
+
+    printf "=======\t\tGenerate Certificate Authority Completed\t\t=========\n"
+}
+
+function generate() {
+    export HOSTNAME=$1
+    export KEY_STORE_NAME=$HOSTNAME-keystore.jks
+
+    printf "=======\t\tGenerate Keystore for $HOSTNAME\t\t=========\n"
+
+    # create keystore with key and cert
+    keytool -keystore $KEY_STORE_NAME -alias $HOSTNAME -keyalg RSA -validity $VALIDITY -genkey -storepass $STORE_PASS -keypass $KEY_PASS -dname "CN=$HOSTNAME"
+
+    # export host cert
+    keytool -keystore $KEY_STORE_NAME -alias $HOSTNAME -certreq -file $HOSTNAME-cert -storepass $STORE_PASS
+
+    # sign host cert
+    openssl x509 -req -CA $CA_CERT -CAkey $CA_KEY -in $HOSTNAME-cert -out $HOSTNAME-cert-signed -days $VALIDITY -CAcreateserial -passin pass:$KEY_PASS
+
+    # import root ca and signed ca to keystore
+    keytool -keystore $KEY_STORE_NAME -alias CARoot -importcert -file $CA_CERT -storepass $STORE_PASS -noprompt
+    keytool -keystore $KEY_STORE_NAME -alias $HOSTNAME -importcert -file $HOSTNAME-cert-signed -storepass $STORE_PASS -noprompt
+    
+    # remove unused files
+    rm $HOSTNAME-cert
+    rm $HOSTNAME-cert-signed
+
+    printf "=======\t\tGenerate Keystore for $HOSTNAME Completed\t=========\n"
+
+}
+
+rm -rf $WORKSPACE
+mkdir $WORKSPACE
+cd $WORKSPACE
+echo "Generate TLS/SSL under $(pwd)"
+
+createCertificateAuthority
+
+generate zookeeper-0.shin.ps.confluent.io
+generate zookeeper-1.shin.ps.confluent.io
+generate zookeeper-2.shin.ps.confluent.io
+generate broker-0.shin.ps.confluent.io
+generate broker-1.shin.ps.confluent.io
+generate broker-2.shin.ps.confluent.io
+generate c3-0.shin.ps.confluent.io
+generate schema-registry-0.shin.ps.confluent.io
+generate connect-0.shin.ps.confluent.io
+generate ksql-0.shin.ps.confluent.io

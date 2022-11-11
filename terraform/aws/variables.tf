@@ -22,6 +22,14 @@ variable "ssh_key_name" {
   type = string
 }
 
+variable "hosted_zone_id" {
+  type = string
+}
+
+variable "dns_suffix" {
+  type = string
+}
+
 variable "bastion" {
   type = object({
     ami  = string

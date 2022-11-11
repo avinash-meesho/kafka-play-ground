@@ -2,8 +2,20 @@ variable "vpc_id" {
   type = string
 }
 
-variable "subnet_ids" {
+variable "private_subnet_ids" {
   type = list(string)
+}
+
+variable "public_subnet_ids" {
+  type = list(string)
+}
+
+variable "hosted_zone_id" {
+  type = string
+}
+
+variable "dns_suffix" {
+  type = string
 }
 
 variable "resource_prefix" {

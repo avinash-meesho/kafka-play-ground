@@ -11,5 +11,6 @@ fi
 
 cd $cloud
 rm tmp/*
+mkdir tmp
 terraform output -json > tmp/output_raw.json
 cd ..

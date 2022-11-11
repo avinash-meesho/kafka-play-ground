@@ -48,7 +48,17 @@ resource "aws_instance" "instances" {
   user_data = var.user_data
 
   tags = {
-    Name = "${var.resource_prefix}-${var.instance_name}-${count.index}"
+    Name          = "${var.resource_prefix}-${var.instance_name}-${count.index}"
     resource_type = var.instance_name
   }
+}
+
+resource "aws_route53_record" "instances" {
+  count           = var.instance_count
+  allow_overwrite = true
+  zone_id         = var.hosted_zone_id
+  name            = "${var.instance_name}-${count.index}.${var.dns_suffix}"
+  type            = "A"
+  ttl             = "300"
+  records         = var.public_dns ? ["${element(aws_instance.instances.*.public_ip, count.index)}"] : ["${element(aws_instance.instances.*.private_ip, count.index)}"]
 }

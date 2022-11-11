@@ -10,10 +10,9 @@ if [ "$cloud" != "aws" ] && [ "$cloud" != "gcp" ] && [ "$cloud" != "azure" ] ; t
     exit 0
 fi
 
-cd $cloud
+bin/upload_files $cloud $2 $3
 
-scp tmp/hosts.yml ubuntu@$2:.
-scp ~/.ssh/$3 ubuntu@$2:.ssh/
+cd $cloud
 
 ssh ubuntu@$2 < ../resources/remote_commands.txt
 
@@ -22,5 +21,7 @@ Host *
     IdentityFile ~/.ssh/$3
     User ubuntu
 END"
+
+echo "remote_commands completed"
 
 cd ..

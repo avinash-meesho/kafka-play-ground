@@ -25,6 +25,11 @@ schema_registry:
       password.encoder.secret: encoder-secret
   hosts: {}
 kafka_connect:
+  vars:
+    kafka_connect_confluent_hub_plugins:
+    - confluentinc/kafka-connect-http:1.6.1
+    - confluentinc/kafka-connect-datagen:0.6.0
+    - confluentinc/kafka-connect-oracle-cdc:2.2.2
   hosts: {}
 ksql:
   hosts: {}

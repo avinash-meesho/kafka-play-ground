@@ -2,21 +2,25 @@
 
 ### Configuration
 ```shell
-export BROKER=ip-10-0-1-210.ap-southeast-2.compute.internal
-export TOPIC=web.seq
+export BROKER=localhost
+export TOPIC=web_seq
 
 tee conn.conf << END
 security.protocol=SASL_PLAINTEXT
 sasl.mechanism=SCRAM-SHA-512
-sasl.jaas.config=org.apache.kafka.common.security.scram.ScramLoginModule required username="{{ scram-user }}" password="{{ scram-password }}";
+sasl.jaas.config=org.apache.kafka.common.security.scram.ScramLoginModule required username="admin" password="admin-secret";
 END
 ```
+
+kafka-topics --create --topic $TOPIC \
+  --bootstrap-server $BROKER:9092 \
+  --command-config CP-command.config
 
 ### Produce
 ```
 kafka-topics --create --topic $TOPIC \
-  --partitions 3 \
-  --replication-factor 3 \
+  --partitions 1 \
+  --replication-factor 1 \
   --bootstrap-server $BROKER:9092 \
   --command-config conn.conf
 

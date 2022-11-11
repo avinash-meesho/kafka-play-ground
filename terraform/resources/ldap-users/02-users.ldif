@@ -1,0 +1,182 @@
+dn: cn=superuser,ou=users,dc=shin,dc=ps,dc=confluent,dc=io
+objectClass: inetOrgPerson
+objectClass: posixAccount
+objectClass: shadowAccount
+uid: superuser
+sn: Surename
+givenName: superuser
+cn: superuser
+displayName: superuser
+uidNumber: 10011
+gidNumber: 5000
+userPassword: superuser
+gecos: superuser
+loginShell: /bin/bash
+homeDirectory: /home/superuser
+
+dn: cn=KafkaDevelopers,ou=groups,dc=shin,dc=ps,dc=confluent,dc=io
+changetype: modify
+add: memberuid
+memberuid: cn=superuser,ou=users,dc=shin,dc=ps,dc=confluent,dc=io
+
+
+
+dn: cn=kafka_broker,ou=users,dc=shin,dc=ps,dc=confluent,dc=io
+objectClass: inetOrgPerson
+objectClass: posixAccount
+objectClass: shadowAccount
+uid: kafka_broker
+sn: Surename
+givenName: kafka_broker
+cn: kafka_broker
+displayName: kafka_broker
+uidNumber: 10012
+gidNumber: 5000
+userPassword: kafka_broker
+gecos: kafka_broker
+loginShell: /bin/bash
+homeDirectory: /home/kafka_broker
+
+dn: cn=KafkaDevelopers,ou=groups,dc=shin,dc=ps,dc=confluent,dc=io
+changetype: modify
+add: memberuid
+memberuid: cn=kafka_broker,ou=users,dc=shin,dc=ps,dc=confluent,dc=io
+
+
+
+dn: cn=mds,ou=users,dc=shin,dc=ps,dc=confluent,dc=io
+objectClass: inetOrgPerson
+objectClass: posixAccount
+objectClass: shadowAccount
+uid: mds
+sn: Surename
+givenName: mds
+cn: mds
+displayName: mds
+uidNumber: 10013
+gidNumber: 5000
+userPassword: mds
+gecos: mds
+loginShell: /bin/bash
+homeDirectory: /home/mds
+
+dn: cn=KafkaDevelopers,ou=groups,dc=shin,dc=ps,dc=confluent,dc=io
+changetype: modify
+add: memberuid
+memberuid: cn=mds,ou=users,dc=shin,dc=ps,dc=confluent,dc=io
+
+
+
+dn: cn=connect_worker,ou=users,dc=shin,dc=ps,dc=confluent,dc=io
+objectClass: inetOrgPerson
+objectClass: posixAccount
+objectClass: shadowAccount
+uid: connect_worker
+sn: Surename
+givenName: connect_worker
+cn: connect_worker
+displayName: connect_worker
+uidNumber: 10014
+gidNumber: 5000
+userPassword: connect_worker
+gecos: connect_worker
+loginShell: /bin/bash
+homeDirectory: /home/connect_worker
+
+dn: cn=KafkaDevelopers,ou=groups,dc=shin,dc=ps,dc=confluent,dc=io
+changetype: modify
+add: memberuid
+memberuid: cn=connect_worker,ou=users,dc=shin,dc=ps,dc=confluent,dc=io
+
+
+
+dn: cn=schema_registry,ou=users,dc=shin,dc=ps,dc=confluent,dc=io
+objectClass: inetOrgPerson
+objectClass: posixAccount
+objectClass: shadowAccount
+uid: schema_registry
+sn: Surename
+givenName: schema_registry
+cn: schema_registry
+displayName: schema_registry
+uidNumber: 10015
+gidNumber: 5000
+userPassword: schema_registry
+gecos: schema_registry
+loginShell: /bin/bash
+homeDirectory: /home/schema_registry
+
+dn: cn=KafkaDevelopers,ou=groups,dc=shin,dc=ps,dc=confluent,dc=io
+changetype: modify
+add: memberuid
+memberuid: cn=schema_registry,ou=users,dc=shin,dc=ps,dc=confluent,dc=io
+
+
+
+dn: cn=ksql,ou=users,dc=shin,dc=ps,dc=confluent,dc=io
+objectClass: inetOrgPerson
+objectClass: posixAccount
+objectClass: shadowAccount
+uid: ksql
+sn: Surename
+givenName: ksql
+cn: ksql
+displayName: ksql
+uidNumber: 10016
+gidNumber: 5000
+userPassword: ksql
+gecos: ksql
+loginShell: /bin/bash
+homeDirectory: /home/ksql
+
+dn: cn=KafkaDevelopers,ou=groups,dc=shin,dc=ps,dc=confluent,dc=io
+changetype: modify
+add: memberuid
+memberuid: cn=ksql,ou=users,dc=shin,dc=ps,dc=confluent,dc=io
+
+
+
+dn: cn=control_center,ou=users,dc=shin,dc=ps,dc=confluent,dc=io
+objectClass: inetOrgPerson
+objectClass: posixAccount
+objectClass: shadowAccount
+uid: control_center
+sn: Surename
+givenName: control_center
+cn: control_center
+displayName: control_center
+uidNumber: 10017
+gidNumber: 5000
+userPassword: control_center
+gecos: control_center
+loginShell: /bin/bash
+homeDirectory: /home/control_center
+
+
+dn: cn=KafkaDevelopers,ou=groups,dc=shin,dc=ps,dc=confluent,dc=io
+changetype: modify
+add: memberuid
+memberuid: cn=control_center,ou=users,dc=shin,dc=ps,dc=confluent,dc=io
+
+
+
+dn: cn=rest_proxy,ou=users,dc=shin,dc=ps,dc=confluent,dc=io
+objectClass: inetOrgPerson
+objectClass: posixAccount
+objectClass: shadowAccount
+uid: rest_proxy
+sn: Surename
+givenName: rest_proxy
+cn: rest_proxy
+displayName: rest_proxy
+uidNumber: 10018
+gidNumber: 5000
+userPassword: rest_proxy
+gecos: rest_proxy
+loginShell: /bin/bash
+homeDirectory: /home/rest_proxy
+
+dn: cn=KafkaDevelopers,ou=groups,dc=shin,dc=ps,dc=confluent,dc=io
+changetype: modify
+add: memberuid
+memberuid: cn=rest_proxy,ou=users,dc=shin,dc=ps,dc=confluent,dc=io

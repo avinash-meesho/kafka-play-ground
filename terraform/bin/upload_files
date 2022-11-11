@@ -1,0 +1,25 @@
+#! /bin/bash
+
+cloud=$1
+
+if [ "$cloud" != "aws" ] && [ "$cloud" != "gcp" ] && [ "$cloud" != "azure" ] ; then
+    echo "   invalid cloud_provider: $cloud"
+    echo "   usage: remote_commands [cloud_provider]"
+    echo "   cloud_provider aws, gcp, azure"
+    exit 0
+fi
+
+[ -d "tmp/certs" ] && scp -r tmp/certs ubuntu@$2:.
+
+ssh ubuntu@$2 "rm -rf /tmp/certs"
+ssh ubuntu@$2 "mv certs /tmp/certs"
+
+cd $cloud
+
+scp tmp/hosts.yml ubuntu@$2:.
+scp ../resources/cp-stop.yml ubuntu@$2:.
+
+ssh ubuntu@$2 "rm -r .ssh/$3"
+scp ~/.ssh/$3 ubuntu@$2:.ssh/
+
+echo "upload_files completed"

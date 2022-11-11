@@ -19,6 +19,19 @@ variable "subnet_ids" {
   type = list(string)
 }
 
+variable "public_dns" {
+  type    = bool
+  default = false
+}
+
+variable "hosted_zone_id" {
+  type = string
+}
+
+variable "dns_suffix" {
+  type = string
+}
+
 variable "ingress_ports" {
   type = map(object({
     description = string

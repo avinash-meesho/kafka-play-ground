@@ -1,0 +1,70 @@
+all:
+  vars:
+    ansible_connection: ssh
+    ansible_user: ubuntu
+    ansible_become: true
+    deployment_strategy: parallel
+    jmxexporter_enabled: true
+
+    ssl_enabled: true
+    ssl_provided_keystore_and_truststore: true
+    ssl_keystore_filepath: "/tmp/certs/{{inventory_hostname}}-keystore.jks"
+    ssl_keystore_key_password: passwd
+    ssl_keystore_store_password: passwd
+    ssl_truststore_filepath: "/tmp/certs/truststore.jks"
+    ssl_truststore_password: passwd
+
+    sasl_protocol: plain
+    sasl_plain_users:
+      admin:
+        principal: 'kafka'
+        password: 'admin-secret'
+      schema_registry:
+        principal: 'schema-registry'
+        password: 'schema_registry-secret'
+      kafka_connect:
+        principal: 'kafka-connect'
+        password: 'kafka_connect-secret'
+      ksql:
+        principal: 'ksqldb'
+        password: 'ksql-secret'
+      kafka_rest:
+        principal: 'kafka_rest'
+        password: 'kafka_rest-secret'
+      control_center:
+        principal: 'control-center'
+        password: 'control_center-secret'
+      kafka_connect_replicator:
+        principal: 'kafka_connect_replicator'
+        password: 'kafka_connect_replicator-secret'
+      client:
+        principal: 'client'
+        password: 'client-secret'
+zookeeper:
+  hosts: {}
+kafka_broker:
+  vars:
+    kafka_broker_custom_properties:
+      password.encoder.secret: encoder-secret
+  hosts: {}
+control_center:
+  hosts: {}
+schema_registry:
+  vars:
+    schema_registry_custom_properties:
+      resource.extension.class: io.confluent.schema.exporter.SchemaExporterResourceExtension
+      kafkastore.update.handlers: io.confluent.schema.exporter.storage.SchemaExporterUpdateHandler
+      password.encoder.secret: encoder-secret
+  hosts: {}
+kafka_connect:
+  vars:
+    kafka_connect_confluent_hub_plugins:
+    - confluentinc/kafka-connect-http:1.6.1
+    - confluentinc/kafka-connect-datagen:0.6.0
+    - confluentinc/kafka-connect-oracle-cdc:2.2.2
+  hosts: {}
+ksql:
+  hosts: {}
+kafka_rest:
+  hosts: {}
+

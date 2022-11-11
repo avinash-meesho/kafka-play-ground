@@ -10,3 +10,7 @@ output "public_ip" {
 output "private_dns" {
   value = aws_instance.instances.*.private_dns
 }
+
+output "custom_dns" {
+  value = aws_route53_record.instances.*.name
+}

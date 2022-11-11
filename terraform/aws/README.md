@@ -12,14 +12,15 @@ terraform apply --auto-approve
 ### 2. Construct inventory file for cp-ansible
 The following commands will use the terraform output to build an inventory file - `tmp/hosts.yml`
 ```
-bin/output_json
-bin/extract_hosts
+bin/output_json aws
+bin/extract_hosts aws sasl-ssl
+bin/generate_certs
 ```
 
 ### 3. Setup bastion host
 Copy SSH key and inventory file to bastion host and setup the bastion host with required tools
 ```
-bin/remote_commands {{bastion_ip}} {{ssh_key_name}}
+bin/remote_commands aws bastion-0.shin.ps.confluent.io shin-test-key.pem
 ```
 The following fields in `resources/remote_commands.txt` and `bin/remote_commands` need to be modified:
 
@@ -38,8 +39,7 @@ ansible-playbook -i hosts.yml confluent.platform.all
 ```
 (optional) Stop components of Confluent Platform if you encounter validation errors on `not enough memory`
 ```
-
-ansible-playbook -i hosts.yml cp-stop.yml
+ansible-playbook -i hosts.yml cp-stop.yml --tags control_center
 ```
 
 ### 5. Setup control center proxy on bastion host
@@ -55,7 +55,7 @@ frontend c3FE
 # c3BE
 backend c3BE
    mode tcp
-   server c3 {{ control center hostname }}:9021 check
+   server c3 c3-0.shin.ps.confluent.io:9021 check
 END
 
 sudo systemctl restart haproxy
@@ -63,5 +63,5 @@ sudo systemctl restart haproxy
 
 verify the cluster in browser
 ```
-http://{{ bastion_ip }}:9021
+http://shin.aws:9021
 ```

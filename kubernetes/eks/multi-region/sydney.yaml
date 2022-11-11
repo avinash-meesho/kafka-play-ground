@@ -4,7 +4,7 @@ apiVersion: eksctl.io/v1alpha5
 kind: ClusterConfig
 
 metadata:
-  name: shin-eks-cluster
+  name: shin-eks-syd-cluster
   region: ap-southeast-2
 
 managedNodeGroups:
@@ -12,7 +12,7 @@ managedNodeGroups:
     instanceType: t3a.large
     minSize: 2
     desiredCapacity: 2
-    maxSize: 8
+    maxSize: 4
     availabilityZones: ["ap-southeast-2b"]
     volumeSize: 50
     updateConfig:

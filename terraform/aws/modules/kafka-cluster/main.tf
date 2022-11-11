@@ -9,10 +9,12 @@ module "zookeeper" {
   instance_type  = var.zookeeper_type != "" ? var.zookeeper_type : var.default_instance_type
   instance_count = var.zookeeper_count
 
-  ssh_key_name   = var.ssh_key_name
+  ssh_key_name = var.ssh_key_name
 
-  vpc_id     = var.vpc_id
-  subnet_ids = var.subnet_ids
+  hosted_zone_id = var.hosted_zone_id
+  dns_suffix     = var.dns_suffix
+  vpc_id         = var.vpc_id
+  subnet_ids     = var.private_subnet_ids
   ingress_ports = {
     ssh : {
       description : "",
@@ -21,6 +23,10 @@ module "zookeeper" {
     zk1 : {
       description : "",
       port : 2181
+    },
+    zksecure : {
+      description : "",
+      port : 2182
     },
     zk2 : {
       description : "",
@@ -43,10 +49,13 @@ module "broker" {
   instance_type  = var.broker_type != "" ? var.broker_type : var.default_instance_type
   instance_count = var.broker_count
 
-  ssh_key_name   = var.ssh_key_name
+  ssh_key_name = var.ssh_key_name
 
-  vpc_id     = var.vpc_id
-  subnet_ids = var.subnet_ids
+  hosted_zone_id = var.hosted_zone_id
+  dns_suffix     = var.dns_suffix
+  vpc_id         = var.vpc_id
+  subnet_ids     = var.private_subnet_ids
+
   ingress_ports = {
     ssh : {
       description : "",
@@ -61,6 +70,10 @@ module "broker" {
       port : 9092
     },
     bk3 : {
+      description : "",
+      port : 9093
+    },
+    bk4 : {
       description : "",
       port : 8090
     }
@@ -77,10 +90,15 @@ module "c3" {
   instance_type  = var.c3_type != "" ? var.c3_type : var.default_instance_type
   instance_count = var.c3_count
 
-  ssh_key_name   = var.ssh_key_name
+  ssh_key_name = var.ssh_key_name
 
-  vpc_id     = var.vpc_id
-  subnet_ids = var.subnet_ids
+  public_dns = true
+
+  hosted_zone_id = var.hosted_zone_id
+  dns_suffix     = var.dns_suffix
+  vpc_id         = var.vpc_id
+  subnet_ids     = var.public_subnet_ids
+
   ingress_ports = {
     ssh : {
       description : "",
@@ -103,10 +121,13 @@ module "connect" {
   instance_type  = var.connect_type != "" ? var.connect_type : var.default_instance_type
   instance_count = var.connect_count
 
-  ssh_key_name   = var.ssh_key_name
+  ssh_key_name = var.ssh_key_name
 
-  vpc_id     = var.vpc_id
-  subnet_ids = var.subnet_ids
+  hosted_zone_id = var.hosted_zone_id
+  dns_suffix     = var.dns_suffix
+  vpc_id         = var.vpc_id
+  subnet_ids     = var.private_subnet_ids
+
   ingress_ports = {
     ssh : {
       description : "",
@@ -130,10 +151,14 @@ module "ksql" {
   instance_type  = var.ksql_type != "" ? var.ksql_type : var.default_instance_type
   instance_count = var.ksql_count
 
-  ssh_key_name   = var.ssh_key_name
+  ssh_key_name = var.ssh_key_name
 
-  vpc_id     = var.vpc_id
-  subnet_ids = var.subnet_ids
+  hosted_zone_id = var.hosted_zone_id
+  dns_suffix     = var.dns_suffix
+  vpc_id         = var.vpc_id
+  subnet_ids     = var.public_subnet_ids
+  public_dns     = true
+
   ingress_ports = {
     ssh : {
       description : "",
@@ -156,10 +181,13 @@ module "schema-registry" {
   instance_type  = var.schema_registry_type != "" ? var.schema_registry_type : var.default_instance_type
   instance_count = var.schema_registry_count
 
-  ssh_key_name   = var.ssh_key_name
+  ssh_key_name = var.ssh_key_name
 
-  vpc_id     = var.vpc_id
-  subnet_ids = var.subnet_ids
+  hosted_zone_id = var.hosted_zone_id
+  dns_suffix     = var.dns_suffix
+  vpc_id         = var.vpc_id
+  subnet_ids     = var.private_subnet_ids
+
   ingress_ports = {
     ssh : {
       description : "",
@@ -182,10 +210,13 @@ module "rest-proxy" {
   instance_type  = var.rest_proxy_type != "" ? var.rest_proxy_type : var.default_instance_type
   instance_count = var.rest_proxy_count
 
-  ssh_key_name   = var.ssh_key_name
+  ssh_key_name = var.ssh_key_name
 
-  vpc_id     = var.vpc_id
-  subnet_ids = var.subnet_ids
+  hosted_zone_id = var.hosted_zone_id
+  dns_suffix     = var.dns_suffix
+  vpc_id         = var.vpc_id
+  subnet_ids     = var.private_subnet_ids
+
   ingress_ports = {
     ssh : {
       description : "",

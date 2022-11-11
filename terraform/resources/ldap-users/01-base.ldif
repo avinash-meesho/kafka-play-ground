@@ -1,0 +1,16 @@
+dn: ou=Groups,dc=shin,dc=ps,dc=confluent,dc=io
+objectClass: top
+objectClass: organizationalUnit
+ou: Groups
+
+dn: ou=Users,dc=shin,dc=ps,dc=confluent,dc=io
+objectClass: top
+objectClass: organizationalUnit
+ou: Users
+
+dn: cn=KafkaDevelopers,ou=groups,dc=shin,dc=ps,dc=confluent,dc=io
+objectClass: top
+objectClass: posixGroup
+cn: KafkaDevelopers
+gidNumber: 5000
+

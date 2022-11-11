@@ -33,7 +33,7 @@ connect_dns=$(convert_dns kafka_connect)
 ksql_dns=$(convert_dns ksql)
 rest_proxy_dns=$(convert_dns kafka_rest)
 
-template_json=$(yq -o=json ../resources/hosts-template.yml)
+template_json=$(yq -o=json ../resources/hosts-template-$2.yml)
 
 hosts_json=$(echo $template_json | \
   jq ".zookeeper.hosts |= $zookeeper_dns" | \
