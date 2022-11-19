@@ -1,0 +1,18 @@
+#! /bin/bash
+
+secret=admin-user
+secret_pattern=^$secret-token-.{5}
+namespace=kubernetes-dashboard
+
+secret_name=$(kubectl get secret -n $namespace | grep -E -o $secret_pattern)
+
+
+encoded_token=$(kubectl get secret -n $namespace -o json $secret_name | jq -r '.data.token')
+
+echo $encoded_token | base64 -d | pbcopy
+
+
+
+echo "Token of Kubernetes Secret($secret_name) has been copied to clipboard."
+
+

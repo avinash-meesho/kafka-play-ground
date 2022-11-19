@@ -20,3 +20,5 @@ kubectl create ns sin --contex mrc-sin
 kubectl create ns syd --contex mrc-syd
 kubectl create ns tky --contex mrc-tky
 ```
+
+eksctl delete cluster -f sydney.yaml --profile confluent

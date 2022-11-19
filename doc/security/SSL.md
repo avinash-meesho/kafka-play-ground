@@ -7,6 +7,9 @@ export KEY_PASS=passwd
 export STORE_PASS=passwd
 export DOMAIN=shin.ps.confluent.io
 ```
+VALIDITY=90
+KEY_PASS=password
+openssl req -new -x509 -keyout ca-key -out ca-cert -days $VALIDITY -subj "/C=CN/O=BBA/OU=IT/L=Shengyang/ST=Liaoning/CN=testuser" -passout pass:$KEY_PASS
 
 1. Create CA
 
@@ -38,6 +41,11 @@ openssl x509 -req -CA ca-cert -CAkey ca-key -in $HOSTNAME-cert -out $HOSTNAME-ce
 keytool -keystore $KEY_STORE_NAME -alias CARoot -importcert -file ca-cert -storepass $STORE_PASS -noprompt
 keytool -keystore $KEY_STORE_NAME -alias $HOSTNAME -importcert -file $HOSTNAME-cert-signed -storepass $STORE_PASS -noprompt
 keytool -keystore $TRUST_STORE_NAME -alias CARoot -importcert -file ca-cert -storepass $STORE_PASS -noprompt
+```
+
+
+```
+keytool -list -v -keystore $KEY_STORE_NAME.jks
 ```
 
 3. mTLS client login

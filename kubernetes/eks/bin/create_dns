@@ -1,0 +1,3 @@
+#! /bin/bash
+
+python3 bin/create_dns_terraform.py
