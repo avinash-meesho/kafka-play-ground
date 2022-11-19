@@ -1,5 +1,7 @@
 # Contents
 
+- Confluent For Kubernetes
+    - [EKS](./kubernetes/eks/README.md)
 - Terraform resource provision
     - [AWS](./terraform/aws/README.md)
     - [GCP](./terraform/gcp/README.md)
