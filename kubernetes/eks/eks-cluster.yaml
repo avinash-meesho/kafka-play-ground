@@ -7,16 +7,25 @@ metadata:
   name: shin-eks-cluster
   region: ap-southeast-2
 
+vpc:
+  id: "vpc-eb1daf8c"
+  subnets:
+    public:
+      ap-southeast-2a:
+        id: "subnet-86a6cacf"
+      ap-southeast-2b:
+        id: "subnet-05017362"
+      ap-southeast-2c:
+        id: "subnet-eb48bab3"
+
 managedNodeGroups:
   - name: managed-ng-public
     instanceType: t3a.large
-    minSize: 2
-    desiredCapacity: 2
+    minSize: 4
+    desiredCapacity: 4
     maxSize: 8
-    availabilityZones: ["ap-southeast-2b"]
+    availabilityZones: ["ap-southeast-2a", "ap-southeast-2b", "ap-southeast-2c"]
     volumeSize: 50
-    updateConfig:
-      maxUnavailable: 3 # or `maxUnavailablePercentage: 75` to specify maxUnavailable as a percentage of total nodes
     labels: {role: worker}
     iam:
       withAddonPolicies:

@@ -6,7 +6,7 @@
 
 ### Cluster Creation
 ```
-eksctl create cluster -f cluster.yaml --profile confluent
+eksctl create cluster -f eks-cluster.yaml --profile confluent
 ```
 
 ### Kubectl Configuration
@@ -116,6 +116,16 @@ kubectl api-resources --api-group=platform.confluent.io
 kubectl explain kafka.spec.podTemplate
 ```
 
+## Manage Cluster
+
+1. Create topics
+2. Scale cluster
+    - scale out broker to 5
+    - new topic with 12 partitions
+    - create datagen connector
+      - partition distributions
+    - scale in broker to 3
+
 # Destroy Cluster
 ```
 # Delete CP Cluster
@@ -131,5 +141,5 @@ terraform destroy --auto-approve
 
 # Delete EKS
 
-eksctl delete cluster -f cluster.yaml --profile confluent
+eksctl delete cluster -f eks-cluster.yaml --profile confluent
 ```

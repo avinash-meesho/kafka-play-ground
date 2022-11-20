@@ -9,7 +9,7 @@ resource "aws_route53_record" "connect-bootstrap-lb" {
   name            = "connect.eks.shin.ps.confluent.io"
   type            = "CNAME"
   ttl             = "300"
-  records         =  ["a3da8fdd8b1bb4b78800f9a2307b92c3-1592827776.ap-southeast-2.elb.amazonaws.com"]
+  records         =  ["abccb8254831e4906b2ad01fabcca4e9-81168925.ap-southeast-2.elb.amazonaws.com"]
 }
 
 resource "aws_route53_record" "controlcenter-bootstrap-lb" {
@@ -18,7 +18,7 @@ resource "aws_route53_record" "controlcenter-bootstrap-lb" {
   name            = "c3.eks.shin.ps.confluent.io"
   type            = "CNAME"
   ttl             = "300"
-  records         =  ["aa1bd7c2b3ec14f0798c79279c272b0b-561692509.ap-southeast-2.elb.amazonaws.com"]
+  records         =  ["af802ea1cadea41218c9b86a6eeddf89-1829935743.ap-southeast-2.elb.amazonaws.com"]
 }
 
 resource "aws_route53_record" "kafka-0-lb" {
@@ -27,7 +27,7 @@ resource "aws_route53_record" "kafka-0-lb" {
   name            = "b0.eks.shin.ps.confluent.io"
   type            = "CNAME"
   ttl             = "300"
-  records         =  ["ad87ad57609314c47abb4ffe29fcfe25-2011985066.ap-southeast-2.elb.amazonaws.com"]
+  records         =  ["a1c2d4508b5e743b6ba61cd2ff50e98b-207272677.ap-southeast-2.elb.amazonaws.com"]
 }
 
 resource "aws_route53_record" "kafka-1-lb" {
@@ -36,7 +36,7 @@ resource "aws_route53_record" "kafka-1-lb" {
   name            = "b1.eks.shin.ps.confluent.io"
   type            = "CNAME"
   ttl             = "300"
-  records         =  ["a82f1b1ee309648fa9f5dd3248e591d0-1561373516.ap-southeast-2.elb.amazonaws.com"]
+  records         =  ["a2fdd9c17df7b4f01900121549a7eb0b-1375572769.ap-southeast-2.elb.amazonaws.com"]
 }
 
 resource "aws_route53_record" "kafka-2-lb" {
@@ -45,7 +45,7 @@ resource "aws_route53_record" "kafka-2-lb" {
   name            = "b2.eks.shin.ps.confluent.io"
   type            = "CNAME"
   ttl             = "300"
-  records         =  ["a9a1bbe25478e48e58577b8a98fa9ea5-399626083.ap-southeast-2.elb.amazonaws.com"]
+  records         =  ["a77a944e3d2a549af88b7076ca30e03d-1807297606.ap-southeast-2.elb.amazonaws.com"]
 }
 
 resource "aws_route53_record" "kafka-bootstrap-lb" {
@@ -54,7 +54,7 @@ resource "aws_route53_record" "kafka-bootstrap-lb" {
   name            = "kafka.eks.shin.ps.confluent.io"
   type            = "CNAME"
   ttl             = "300"
-  records         =  ["a5aa950e4b8fa4a96a546b0f286dbde4-570617852.ap-southeast-2.elb.amazonaws.com"]
+  records         =  ["ab8541acc781e45eca445ce647fd1a6e-65939159.ap-southeast-2.elb.amazonaws.com"]
 }
 
 resource "aws_route53_record" "kafkarestproxy-bootstrap-lb" {
@@ -63,7 +63,7 @@ resource "aws_route53_record" "kafkarestproxy-bootstrap-lb" {
   name            = "kafkarestproxy.eks.shin.ps.confluent.io"
   type            = "CNAME"
   ttl             = "300"
-  records         =  ["a267d06af4df0461a8756d31f0033e9e-978512888.ap-southeast-2.elb.amazonaws.com"]
+  records         =  ["ac0ce4ad2dc6e4701bd196a6d4f62f1f-184731517.ap-southeast-2.elb.amazonaws.com"]
 }
 
 resource "aws_route53_record" "ksqldb-bootstrap-lb" {
@@ -72,7 +72,7 @@ resource "aws_route53_record" "ksqldb-bootstrap-lb" {
   name            = "ksql.eks.shin.ps.confluent.io"
   type            = "CNAME"
   ttl             = "300"
-  records         =  ["a84848d17e57e426388ca677a103937c-1475624100.ap-southeast-2.elb.amazonaws.com"]
+  records         =  ["a2da822e4e02841f39a2bd43da0b397f-542587883.ap-southeast-2.elb.amazonaws.com"]
 }
 
 resource "aws_route53_record" "schemaregistry-bootstrap-lb" {
@@ -81,5 +81,5 @@ resource "aws_route53_record" "schemaregistry-bootstrap-lb" {
   name            = "schemaregistry.eks.shin.ps.confluent.io"
   type            = "CNAME"
   ttl             = "300"
-  records         =  ["ad84cf3f7abc749498c420d1c6e92194-1816775946.ap-southeast-2.elb.amazonaws.com"]
+  records         =  ["ae088903f9acf4cbd84ec35a711dda1d-968410460.ap-southeast-2.elb.amazonaws.com"]
 }

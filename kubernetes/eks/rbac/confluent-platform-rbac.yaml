@@ -17,13 +17,8 @@ kind: Kafka
 metadata:
   name: kafka
   namespace: confluent
-  annotations:
-    platform.confluent.io/enable-shrink: "true"
 spec:
   replicas: 3
-  # podTemplate:
-  #   annotations:
-  #     kafkacluster-manual-roll: "1"
   image:
     application: confluentinc/cp-server:7.2.0
     init: confluentinc/confluent-init-container:2.4.0
@@ -31,14 +26,13 @@ spec:
   metricReporter:
     enabled: true
   listeners:
-    external:
-      externalAccess:
-        type: loadBalancer
-        loadBalancer:
-          domain: eks.shin.ps.confluent.io
-  configOverrides:
-    server:
-      - confluent.balancer.heal.broker.failure.threshold.ms=300000
+      external:
+        authentication:
+          type: ldap
+        externalAccess:
+          type: loadBalancer
+          loadBalancer:
+            domain: eks.shin.ps.confluent.io
 ---
 apiVersion: platform.confluent.io/v1beta1
 kind: Connect
@@ -50,18 +44,6 @@ spec:
   image:
     application: confluentinc/cp-server-connect:7.2.0
     init: confluentinc/confluent-init-container:2.4.0
-  build:
-    type: onDemand
-    onDemand:
-      plugins:
-        locationType: confluentHub
-        confluentHub:
-          - name: kafka-connect-datagen
-            owner: confluentinc
-            version: 0.6.0
-          - name: kafka-connect-http
-            owner: confluentinc
-            version: 1.6.1
   dependencies:
     kafka:
       bootstrapEndpoint: kafka:9071

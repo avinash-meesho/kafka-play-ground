@@ -1,0 +1,23 @@
+apiVersion: platform.confluent.io/v1beta1
+kind: KafkaTopic
+metadata:
+  name: eks.topic.perf
+  namespace: confluent
+spec:
+  replicas: 3
+  partitionCount: 12
+  kafkaClusterRef:
+    name: kafka
+
+---
+
+apiVersion: platform.confluent.io/v1beta1
+kind: KafkaTopic
+metadata:
+  name: eks.topic.test
+  namespace: confluent
+spec:
+  replicas: 3
+  partitionCount: 24
+  kafkaClusterRef:
+    name: kafka

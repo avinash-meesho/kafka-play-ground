@@ -1,6 +1,6 @@
 1. install ldap
 ```
-sudo apt install slapd ldap-utils
+sudo apt install slapd ldap-utils -y
 ```
 configure password with `admin`
 
@@ -8,7 +8,7 @@ configure password with `admin`
 ```
 sudo dpkg-reconfigure slapd
 ```
-configure Domain with `shin.ps.confluent.io`
+configure Domain with `shin.ps.confluent.io`, organisation with `confluent`
 
 3. ensure the port 389 is accessible for the ldap server
 

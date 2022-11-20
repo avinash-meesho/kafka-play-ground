@@ -101,3 +101,26 @@ kafka-avro-console-consumer \
   --property schema.registry.basic.auth.user.info=$SCHEMA_REGISTRY_CREDS \
   --consumer.config cc-conn.conf
 ```
+
+
+```
+TOPIC=perf.test
+BROKER=kafka.eks.shin.ps.confluent.io:9092
+kafka-topics --create --topic $TOPIC \
+  --partitions 6 \
+  --replication-factor 1 \
+  --bootstrap-server $BROKER
+tee conn.conf << END
+bootstrap.servers=$BROKER
+acks=1 
+batch.size=600000 
+linger.ms=10 
+END
+kafka-producer-perf-test \
+--num-records 40000 \
+--record-size 1000 \
+--topic $TOPIC \
+--throughput 1000 \
+--producer.config conn.conf \
+--print-metrics
+```

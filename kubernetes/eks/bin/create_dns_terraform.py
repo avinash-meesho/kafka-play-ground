@@ -4,8 +4,7 @@ import json
 namespace = 'confluent'
 base_domain = 'eks.shin.ps.confluent.io'
 
-# cmd = 'kubectl get services -o json -n ' + namespace
-cmd = 'cat temp.json'
+cmd = 'kubectl get services -o json -n ' + namespace
 extract_lb = '.items[] | select(.spec.type == "LoadBalancer") | {(.metadata.name): .status.loadBalancer.ingress[0].hostname}'
 cmd += " | jq -c '" + extract_lb + "' | jq -s add"
 
