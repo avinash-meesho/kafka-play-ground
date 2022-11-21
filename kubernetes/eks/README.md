@@ -116,16 +116,6 @@ kubectl api-resources --api-group=platform.confluent.io
 kubectl explain kafka.spec.podTemplate
 ```
 
-## Manage Cluster
-
-1. Create topics
-2. Scale cluster
-    - scale out broker to 5
-    - new topic with 12 partitions
-    - create datagen connector
-      - partition distributions
-    - scale in broker to 3
-
 # Destroy Cluster
 ```
 # Delete CP Cluster

@@ -17,22 +17,79 @@ kind: Kafka
 metadata:
   name: kafka
   namespace: confluent
+  annotations:
+    platform.confluent.io/enable-shrink: "true"
 spec:
   replicas: 3
+  # podTemplate:
+  #   annotations:
+  #     kafkacluster-manual-roll: "2"
   image:
     application: confluentinc/cp-server:7.2.0
     init: confluentinc/confluent-init-container:2.4.0
   dataVolumeCapacity: 10Gi
+  listeners:
+    internal:
+      authentication:
+        type: plain
+        jaasConfig:
+          secretRef: credential
+    external:
+      authentication:
+        type: plain
+        jaasConfig:
+          secretRef: credential
+      externalAccess:
+        type: loadBalancer
+        loadBalancer:
+          domain: eks.shin.ps.confluent.io
+  authorization:
+    type: rbac
+    superUsers:
+      - "User:kafka_broker"
+      - "User:superuser"
+  services:
+    mds:
+      tokenKeyPair:
+        secretRef: mds-token
+      externalAccess:
+        type: loadBalancer
+        loadBalancer:
+          domain: eks.shin.ps.confluent.io
+          prefix: mds
+      provider:
+        type: ldap
+        ldap:
+          address: ldap://util.shin.ps.confluent.io:389
+          authentication:
+            type: simple
+            simple:
+              secretRef: credential
+          configurations:
+            groupNameAttribute: cn
+            groupMemberAttributePattern: cn=(.*),ou=users,dc=shin,dc=ps,dc=confluent,dc=io
+            groupSearchBase: ou=groups,dc=shin,dc=ps,dc=confluent,dc=io
+            userNameAttribute: cn
+            userMemberOfAttributePattern: cn=(.*),ou=users,dc=shin,dc=ps,dc=confluent,dc=io
+            userObjectClass: inetOrgPerson
+            userSearchBase: ou=users,dc=shin,dc=ps,dc=confluent,dc=io
   metricReporter:
     enabled: true
-  listeners:
-      external:
-        authentication:
-          type: ldap
-        externalAccess:
-          type: loadBalancer
-          loadBalancer:
-            domain: eks.shin.ps.confluent.io
+    authentication:
+      type: oauthbearer
+      oauthbearer:
+        secretRef: mds-kafka
+  configOverrides:
+    server:
+      - confluent.balancer.heal.broker.failure.threshold.ms=300000
+  dependencies:
+    kafkaRest:
+      authentication:
+        type: bearer
+        bearer:
+          secretRef: mds-kafka
+    zookeeper:
+      endpoint: zookeeper.confluent:2181
 ---
 apiVersion: platform.confluent.io/v1beta1
 kind: Connect
@@ -44,9 +101,35 @@ spec:
   image:
     application: confluentinc/cp-server-connect:7.2.0
     init: confluentinc/confluent-init-container:2.4.0
+  build:
+    type: onDemand
+    onDemand:
+      plugins:
+        locationType: confluentHub
+        confluentHub:
+          - name: kafka-connect-datagen
+            owner: confluentinc
+            version: 0.6.0
+          - name: kafka-connect-http
+            owner: confluentinc
+            version: 1.6.1
+  authorization:
+    type: rbac
   dependencies:
     kafka:
       bootstrapEndpoint: kafka:9071
+      authentication:
+        type: plain
+        jaasConfig:
+          secretRef: credential
+    mds:
+      endpoint: http://kafka.confluent.svc.cluster.local:8090
+      authentication:
+        type: bearer
+        bearer:
+          secretRef: mds-kafka
+      tokenKeyPair:
+        secretRef: mds-token
   externalAccess:
     type: loadBalancer
     loadBalancer:
@@ -67,6 +150,23 @@ spec:
     type: loadBalancer
     loadBalancer:
       domain: eks.shin.ps.confluent.io
+  authorization:
+    type: rbac
+  dependencies:
+    kafka:
+      bootstrapEndpoint: kafka:9071
+      authentication:
+        type: plain
+        jaasConfig:
+          secretRef: credential
+    mds:
+      endpoint: http://kafka.confluent.svc.cluster.local:8090
+      authentication:
+        type: bearer
+        bearer:
+          secretRef: mds-kafka
+      tokenKeyPair:
+        secretRef: mds-token
 ---
 apiVersion: platform.confluent.io/v1beta1
 kind: ControlCenter
@@ -79,7 +179,15 @@ spec:
     application: confluentinc/cp-enterprise-control-center:7.2.0
     init: confluentinc/confluent-init-container:2.4.0
   dataVolumeCapacity: 10Gi
+  authorization:
+    type: rbac
   dependencies:
+    kafka:
+      bootstrapEndpoint: kafka:9071
+      authentication:
+        type: plain
+        jaasConfig:
+          secretRef: credential
     schemaRegistry:
       url: http://schemaregistry.confluent.svc.cluster.local:8081
     ksqldb:
@@ -88,6 +196,14 @@ spec:
     connect:
     - name: connect
       url: http://connect.confluent.svc.cluster.local:8083
+    mds:
+      endpoint: http://kafka.confluent.svc.cluster.local:8090
+      authentication:
+        type: bearer
+        bearer:
+          secretRef: mds-kafka
+      tokenKeyPair:
+        secretRef: mds-token
   externalAccess:
     type: loadBalancer
     loadBalancer:
@@ -107,6 +223,23 @@ spec:
     type: loadBalancer
     loadBalancer:
       domain: eks.shin.ps.confluent.io
+  dependencies:
+    kafka:
+      bootstrapEndpoint: kafka:9071
+      authentication:
+        type: plain
+        jaasConfig:
+          secretRef: credential
+    mds:
+      endpoint: http://kafka.confluent.svc.cluster.local:8090
+      authentication:
+        type: bearer
+        bearer:
+          secretRef: mds-kafka
+      tokenKeyPair:
+        secretRef: mds-token
+  authorization:
+    type: rbac
 ---
 apiVersion: platform.confluent.io/v1beta1
 kind: KafkaRestProxy
@@ -119,9 +252,37 @@ spec:
     application: confluentinc/cp-kafka-rest:7.2.0
     init: confluentinc/confluent-init-container:2.4.0
   dependencies:
+    kafka:
+      bootstrapEndpoint: kafka:9071
+      authentication:
+        type: plain
+        jaasConfig:
+          secretRef: credential
     schemaRegistry:
       url: http://schemaregistry.confluent.svc.cluster.local:8081
+    mds:
+      endpoint: http://kafka.confluent.svc.cluster.local:8090
+      authentication:
+        type: bearer
+        bearer:
+          secretRef: mds-kafka
+      tokenKeyPair:
+        secretRef: mds-token
+  authorization:
+    type: rbac
   externalAccess:
     type: loadBalancer
     loadBalancer:
       domain: eks.shin.ps.confluent.io
+---
+apiVersion: platform.confluent.io/v1beta1
+kind: KafkaRestClass
+metadata:
+  name: default
+  namespace: confluent
+spec:
+  kafkaRest:
+    authentication:
+      type: bearer
+      bearer:
+        secretRef: rest-credential

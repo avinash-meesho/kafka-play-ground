@@ -8,8 +8,8 @@ resource "aws_route53_record" "connect-bootstrap-lb" {
   zone_id         = var.hosted_zone_id
   name            = "connect.eks.shin.ps.confluent.io"
   type            = "CNAME"
-  ttl             = "300"
-  records         =  ["abccb8254831e4906b2ad01fabcca4e9-81168925.ap-southeast-2.elb.amazonaws.com"]
+  ttl             = "5"
+  records         =  ["a8d7eef0629534b02857d90718bf741c-586859387.ap-southeast-2.elb.amazonaws.com"]
 }
 
 resource "aws_route53_record" "controlcenter-bootstrap-lb" {
@@ -17,8 +17,8 @@ resource "aws_route53_record" "controlcenter-bootstrap-lb" {
   zone_id         = var.hosted_zone_id
   name            = "c3.eks.shin.ps.confluent.io"
   type            = "CNAME"
-  ttl             = "300"
-  records         =  ["af802ea1cadea41218c9b86a6eeddf89-1829935743.ap-southeast-2.elb.amazonaws.com"]
+  ttl             = "5"
+  records         =  ["a15c45710f42a4c04b6bee836c9ec0ae-1057857746.ap-southeast-2.elb.amazonaws.com"]
 }
 
 resource "aws_route53_record" "kafka-0-lb" {
@@ -26,8 +26,8 @@ resource "aws_route53_record" "kafka-0-lb" {
   zone_id         = var.hosted_zone_id
   name            = "b0.eks.shin.ps.confluent.io"
   type            = "CNAME"
-  ttl             = "300"
-  records         =  ["a1c2d4508b5e743b6ba61cd2ff50e98b-207272677.ap-southeast-2.elb.amazonaws.com"]
+  ttl             = "5"
+  records         =  ["ab7d420ceb6944106aeb761067451451-1307818107.ap-southeast-2.elb.amazonaws.com"]
 }
 
 resource "aws_route53_record" "kafka-1-lb" {
@@ -35,8 +35,8 @@ resource "aws_route53_record" "kafka-1-lb" {
   zone_id         = var.hosted_zone_id
   name            = "b1.eks.shin.ps.confluent.io"
   type            = "CNAME"
-  ttl             = "300"
-  records         =  ["a2fdd9c17df7b4f01900121549a7eb0b-1375572769.ap-southeast-2.elb.amazonaws.com"]
+  ttl             = "5"
+  records         =  ["a7f90cfe66d694efb9835be4a7f4bc67-576018618.ap-southeast-2.elb.amazonaws.com"]
 }
 
 resource "aws_route53_record" "kafka-2-lb" {
@@ -44,8 +44,8 @@ resource "aws_route53_record" "kafka-2-lb" {
   zone_id         = var.hosted_zone_id
   name            = "b2.eks.shin.ps.confluent.io"
   type            = "CNAME"
-  ttl             = "300"
-  records         =  ["a77a944e3d2a549af88b7076ca30e03d-1807297606.ap-southeast-2.elb.amazonaws.com"]
+  ttl             = "5"
+  records         =  ["a8f4a32a8a6164287b02d68fa2053896-1070975928.ap-southeast-2.elb.amazonaws.com"]
 }
 
 resource "aws_route53_record" "kafka-bootstrap-lb" {
@@ -53,8 +53,8 @@ resource "aws_route53_record" "kafka-bootstrap-lb" {
   zone_id         = var.hosted_zone_id
   name            = "kafka.eks.shin.ps.confluent.io"
   type            = "CNAME"
-  ttl             = "300"
-  records         =  ["ab8541acc781e45eca445ce647fd1a6e-65939159.ap-southeast-2.elb.amazonaws.com"]
+  ttl             = "5"
+  records         =  ["a274f49a7877b4c9295cffc411c0d764-379189713.ap-southeast-2.elb.amazonaws.com"]
 }
 
 resource "aws_route53_record" "kafkarestproxy-bootstrap-lb" {
@@ -62,8 +62,8 @@ resource "aws_route53_record" "kafkarestproxy-bootstrap-lb" {
   zone_id         = var.hosted_zone_id
   name            = "kafkarestproxy.eks.shin.ps.confluent.io"
   type            = "CNAME"
-  ttl             = "300"
-  records         =  ["ac0ce4ad2dc6e4701bd196a6d4f62f1f-184731517.ap-southeast-2.elb.amazonaws.com"]
+  ttl             = "5"
+  records         =  ["a9123be0b9e6f49cb9644108490cc138-1389015676.ap-southeast-2.elb.amazonaws.com"]
 }
 
 resource "aws_route53_record" "ksqldb-bootstrap-lb" {
@@ -71,8 +71,8 @@ resource "aws_route53_record" "ksqldb-bootstrap-lb" {
   zone_id         = var.hosted_zone_id
   name            = "ksql.eks.shin.ps.confluent.io"
   type            = "CNAME"
-  ttl             = "300"
-  records         =  ["a2da822e4e02841f39a2bd43da0b397f-542587883.ap-southeast-2.elb.amazonaws.com"]
+  ttl             = "5"
+  records         =  ["a12fe7e929f2647c18356007c1dcb38a-735688733.ap-southeast-2.elb.amazonaws.com"]
 }
 
 resource "aws_route53_record" "schemaregistry-bootstrap-lb" {
@@ -80,6 +80,6 @@ resource "aws_route53_record" "schemaregistry-bootstrap-lb" {
   zone_id         = var.hosted_zone_id
   name            = "schemaregistry.eks.shin.ps.confluent.io"
   type            = "CNAME"
-  ttl             = "300"
-  records         =  ["ae088903f9acf4cbd84ec35a711dda1d-968410460.ap-southeast-2.elb.amazonaws.com"]
+  ttl             = "5"
+  records         =  ["ab43bec516d5446c1884a8d8db6d1ad7-1048123640.ap-southeast-2.elb.amazonaws.com"]
 }

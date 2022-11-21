@@ -33,7 +33,7 @@ resource "aws_route53_record" "%s" {
   zone_id         = var.hosted_zone_id
   name            = "%s"
   type            = "CNAME"
-  ttl             = "300"
+  ttl             = "5"
   records         =  ["%s"]
 }""" % (key, dns, value)
 
